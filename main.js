@@ -13,9 +13,10 @@ client.on('ready', () => {
   console.log('Ready');
 })
 
-client.on('message', message => {
+client.on('messageCreate', message => {
   if (!message.author.bot && message.content.startsWith('!'))
-    runCommand(message.content.replace(/^!/, ''), message);
+    runCommand(message.content.match(/^!([^ \n]*)/)[1],
+      message.content.match(/^![^ \n]* ?\n?(.*)$/s)[1], message);
 })
 
 client.login(botToken);

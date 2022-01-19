@@ -1,6 +1,9 @@
-module.exports = (name, message) => {
+module.exports = (name, args, message) => {
   switch (name) {
-    case 'test':
-      message.channel.send('ok');
+    case 'anonymous':
+    case 'anon': {
+      message.delete()
+      message.channel.send('匿名メッセージが送信されました:\n' + args.replace(/^/mg, '> '));
+    }
   }
 }
