@@ -1,0 +1,23 @@
+{
+  "name": "AddCommandBot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuyu-github/AddCommandBot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yuyu-github/AddCommandBot/issues"
+  },
+  "homepage": "https://github.com/yuyu-github/AddCommandBot#readme",
+  "dependencies": {
+    "discord.js": "^13.6.0"
+  }
+}
