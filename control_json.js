@@ -1,4 +1,4 @@
-module.exports = (json, keys, value) => {
+exports.setJSON = (json, keys, value) => {
   let current = json;
   for (let key of keys) {
     current[key] ??= {};
@@ -6,4 +6,12 @@ module.exports = (json, keys, value) => {
     current = current[key];
   }
   return json;
+}
+
+exports.getJSON = (json, keys) => {
+  let current = json;
+  for (let key of keys) {
+    current = current?.[key];
+  }
+  return current;
 }

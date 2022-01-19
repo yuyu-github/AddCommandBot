@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const setJSON = require('./set_json');
+const { setJSON } = require('./control_json');
 
 module.exports = (name, args, message) => {
   switch (name) {
