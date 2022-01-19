@@ -13,18 +13,22 @@ module.exports = (name, args, message, client) => {
     case 'autorep': {
       let argList = args.split(' ');
       switch (argList[0]) {
-        case 'user': {
-          let id = argList[1].match(/^<@!(.+)>$/)?.[1];
-          if (id != null) {
-            let data = JSON.parse(fs.existsSync(`data/${message.guild.id}.json`) ?
-              fs.readFileSync(`data/${message.guild.id}.json`) : '{}');
-            data = setJSON(data, ['autoReply', 'user', id], {
-              type: argList[2],
-              content: argList.slice(3).join(' '),
-            });
-            fs.writeFileSync(`data/${message.guild.id}.json`, JSON.stringify(data));
-            client.users.fetch(id).then(result =>
-              message.channel.send(`${result.username}が発言したとき自動でリプライするよう設定されました`));
+        case 'add': {
+          switch (argList[1]) {
+            case 'user': {
+              let id = argList[2].match(/^<@!(.+)>$/)?.[1];
+              if (id != null) {
+                let data = JSON.parse(fs.existsSync(`data/${message.guild.id}.json`) ?
+                  fs.readFileSync(`data/${message.guild.id}.json`) : '{}');
+                data = setJSON(data, ['autoReply', 'user', id], {
+                  type: argList[3],
+                  content: argList.slice(4).join(' '),
+                });
+                fs.writeFileSync(`data/${message.guild.id}.json`, JSON.stringify(data));
+                client.users.fetch(id).then(result =>
+                  message.channel.send(`${result.username}が発言したとき自動でリプライするよう設定されました`));
+              }
+            }
           }
         }
       }
