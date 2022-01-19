@@ -2,7 +2,7 @@
   "name": "AddCommandBot",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,8 +16,10 @@
   "bugs": {
     "url": "https://github.com/yuyu-github/AddCommandBot/issues"
   },
-  "homepage": "https://github.com/yuyu-github/AddCommandBot#readme",
   "dependencies": {
     "discord.js": "^13.6.0"
+  },
+  "devDependencies": {
+    "node": "^16.13.2"
   }
 }
