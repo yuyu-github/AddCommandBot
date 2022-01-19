@@ -17,7 +17,7 @@ client.on('ready', () => {
 client.on('messageCreate', message => {
   if (!message.author.bot && message.content.startsWith('!'))
     runCommand(message.content.match(/^!([^ \n]*)/)[1],
-      message.content.match(/^![^ \n]* ?\n?(.*)$/s)[1], message);
+      message.content.match(/^![^ \n]* ?\n?(.*)$/s)[1], message, client);
 
   autoReply(message);
 })

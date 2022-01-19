@@ -2,7 +2,7 @@ const fs = require('fs');
 
 const { setJSON } = require('./control_json');
 
-module.exports = (name, args, message) => {
+module.exports = (name, args, message, client) => {
   switch (name) {
     case 'anonymous':
     case 'anon': {
@@ -23,6 +23,7 @@ module.exports = (name, args, message) => {
               content: argList.slice(3).join(' '),
             });
             fs.writeFileSync(`data/${message.guild.id}.json`, JSON.stringify(data));
+            message.channel.send(`${(await client.users.fetch(id)).username}が発言したとき自動でリプライするよう設定されました}`)
           }
         }
       }
