@@ -23,7 +23,8 @@ module.exports = (name, args, message, client) => {
               content: argList.slice(3).join(' '),
             });
             fs.writeFileSync(`data/${message.guild.id}.json`, JSON.stringify(data));
-            message.channel.send(`${(await client.users.fetch(id)).username}が発言したとき自動でリプライするよう設定されました}`)
+            client.users.fetch(id).then(result =>
+              message.channel.send(`${result.username}が発言したとき自動でリプライするよう設定されました`));
           }
         }
       }
