@@ -1,8 +1,17 @@
 const fs = require('fs');
 
-const { setJSON, removeJSON } = require('./control_json');
+const { getJSON, setJSON, removeJSON } = require('./control_json');
 
 module.exports = (name, args, message, client) => {
+  {
+    let data = JSON.parse(fs.existsSync(`data/${message.guild.id}.json`) ?
+      fs.readFileSync(`data/${message.guild.id}.json`) : '{}');
+    let permission = getJSON(data, ['execPermission', name]);
+    if (permission != null && !message.member.permissions.has(permission)) {
+      message.channel.send('権限がありません');
+      return;
+    }
+  }
   switch (name) {
     case 'anonymous':
     case 'anon': {
@@ -12,7 +21,7 @@ module.exports = (name, args, message, client) => {
     break;
     case 'autoreply':
     case 'autorep': {
-      let argList = args.split(' ').split('\n').filter(item => item != '');
+      let argList = args.split(/ |\n/).filter(item => item != '');
       switch (argList[0]) {
         case 'add': {
           switch (argList[1]) {
@@ -69,5 +78,13 @@ module.exports = (name, args, message, client) => {
       else message.channel.send(`サーバーに入ったとき自動でロールがつかなくなりました`)
     })()
     break;
+    case 'execpermission': {
+      let argList = args.split(/ |\n/).filter(item => item != '');
+      let data = JSON.parse(fs.existsSync(`data/${message.guild.id}.json`) ?
+        fs.readFileSync(`data/${message.guild.id}.json`) : '{}');
+      data = setJSON(data, ['execPermission', argList[0]], argList[1]);
+      fs.writeFileSync(`data/${message.guild.id}.json`, JSON.stringify(data));
+      message.channel.send(`${argList[0]}を実行するのに${argList[1]}が必要になりました`);
+    }
   }
 }
