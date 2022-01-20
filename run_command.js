@@ -55,12 +55,12 @@ module.exports = (name, args, message, client) => {
     }
     break;
     case 'autoroles':
-    case 'autorole': {
+    case 'autorole': (async () => {
       let data = JSON.parse(fs.existsSync(`data/${message.guild.id}.json`) ?
         fs.readFileSync(`data/${message.guild.id}.json`) : '{}');
       if (args != 'none') {
-        const role = message.guild.roles.cache.find(role => role.name == args);
-        if (role == null) break;
+        const role = (await message.guild.roles.fetch()).find(role => role.name == args);
+        if (role == null) return;
         data = setJSON(data, ['autoRoles'], role.id);
       } else {
         data = removeJSON(data, ['autoRoles']);
@@ -68,6 +68,7 @@ module.exports = (name, args, message, client) => {
       fs.writeFileSync(`data/${message.guild.id}.json`, JSON.stringify(data));
       if (args != 'none') message.channel.send(`サーバーに入ったとき自動で${args}ロールがつくようになりました`);
       else message.channel.send(`サーバーに入ったとき自動でロールがつかなくなりました`)
-    }
+    })()
+    break;
   }
 }
