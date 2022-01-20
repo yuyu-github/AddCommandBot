@@ -15,3 +15,15 @@ exports.getJSON = (json, keys) => {
   }
   return current;
 }
+
+exports.removeJSON = (json, keys) => {
+  let current = json;
+  for (let key of keys) {
+    if (current[key] == null) return json;
+    if (key == keys.slice(-1)[0]) {
+      delete current[key] //最後のキーなら削除
+      return json;
+    }
+    current = current[key];
+  }
+}

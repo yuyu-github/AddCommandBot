@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const { setJSON } = require('./control_json');
+const { setJSON, removeJSON } = require('./control_json');
 
 module.exports = (name, args, message, client) => {
   switch (name) {
@@ -9,6 +9,7 @@ module.exports = (name, args, message, client) => {
       message.delete()
       message.channel.send('匿名メッセージが送信されました:\n' + args.replace(/^/mg, '> '));
     }
+    break;
     case 'autoreply':
     case 'autorep': {
       let argList = args.split(' ');
@@ -29,9 +30,28 @@ module.exports = (name, args, message, client) => {
                   message.channel.send(`${result.username}が発言したとき自動でリプライするよう設定されました`));
               }
             }
+            break;
+          }
+        }
+        break;
+        case 'remove': {
+          switch (argList[1]) {
+            case 'user': {
+              let id = argList[2].match(/^<@!(.+)>$/)?.[1];
+              if (id != null) {
+                let data = JSON.parse(fs.existsSync(`data/${message.guild.id}.json`) ?
+                  fs.readFileSync(`data/${message.guild.id}.json`) : '{}');
+                data = removeJSON(data, ['autoReply', 'user', id]);
+                fs.writeFileSync(`data/${message.guild.id}.json`, JSON.stringify(data));
+                client.users.fetch(id).then(result =>
+                  message.channel.send(`${result.username}が発言したとき自動でリプライしなくなりました`));
+              }
+            }
+            break;
           }
         }
       }
     }
+    break;
   }
 }
