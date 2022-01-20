@@ -12,7 +12,7 @@ module.exports = (name, args, message, client) => {
     break;
     case 'autoreply':
     case 'autorep': {
-      let argList = args.split(' ');
+      let argList = args.split(' ').split('\n').filter(item => item != '');
       switch (argList[0]) {
         case 'add': {
           switch (argList[1]) {
@@ -27,7 +27,6 @@ module.exports = (name, args, message, client) => {
                 });
                 fs.writeFileSync(`data/${message.guild.id}.json`, JSON.stringify(data));
                 message.guild.members.fetch(id).then(result => {
-                  console.log(result);
                   message.channel.send(`${result.user.username}が発言したとき自動でリプライするよう設定されました`)});
               }
             }
