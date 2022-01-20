@@ -26,8 +26,9 @@ module.exports = (name, args, message, client) => {
                   content: argList.slice(4).join(' '),
                 });
                 fs.writeFileSync(`data/${message.guild.id}.json`, JSON.stringify(data));
-                client.users.fetch(id).then(result =>
-                  message.channel.send(`${result.username}が発言したとき自動でリプライするよう設定されました`));
+                message.guild.members.fetch(id).then(result => {
+                  console.log(result);
+                  message.channel.send(`${result.user.username}が発言したとき自動でリプライするよう設定されました`)});
               }
             }
             break;
@@ -43,8 +44,8 @@ module.exports = (name, args, message, client) => {
                   fs.readFileSync(`data/${message.guild.id}.json`) : '{}');
                 data = removeJSON(data, ['autoReply', 'user', id]);
                 fs.writeFileSync(`data/${message.guild.id}.json`, JSON.stringify(data));
-                client.users.fetch(id).then(result =>
-                  message.channel.send(`${result.username}が発言したとき自動でリプライしなくなりました`));
+                message.guild.members.fetch(id).then(result =>
+                  message.channel.send(`${result.user.username}が発言したとき自動でリプライしなくなりました`));
               }
             }
             break;
@@ -53,5 +54,20 @@ module.exports = (name, args, message, client) => {
       }
     }
     break;
+    case 'autoroles':
+    case 'autorole': {
+      let data = JSON.parse(fs.existsSync(`data/${message.guild.id}.json`) ?
+        fs.readFileSync(`data/${message.guild.id}.json`) : '{}');
+      if (args != 'none') {
+        const role = message.guild.roles.cache.find(role => role.name == args);
+        if (role == null) break;
+        data = setJSON(data, ['autoRoles'], role.id);
+      } else {
+        data = removeJSON(data, ['autoRoles']);
+      }
+      fs.writeFileSync(`data/${message.guild.id}.json`, JSON.stringify(data));
+      if (args != 'none') message.channel.send(`サーバーに入ったとき自動で${args}ロールがつくようになりました`);
+      else message.channel.send(`サーバーに入ったとき自動でロールがつかなくなりました`)
+    }
   }
 }
