@@ -23,7 +23,7 @@ module.exports = (name, args, message, client) => {
                   fs.readFileSync(`data/${message.guild.id}.json`) : '{}');
                 data = setJSON(data, ['autoReply', 'user', id], {
                   type: argList[3],
-                  content: argList.slice(4).join(' '),
+                  content: argList.slice(4)?.join(' ') ?? '',
                 });
                 fs.writeFileSync(`data/${message.guild.id}.json`, JSON.stringify(data));
                 message.guild.members.fetch(id).then(result => {
