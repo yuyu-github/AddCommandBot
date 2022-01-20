@@ -8,7 +8,7 @@ module.exports = (name, args, message, client) => {
       fs.readFileSync(`data/${message.guild.id}.json`) : '{}');
     let permission = getJSON(data, ['execPermission', name]);
     if (permission != null && !message.member.permissions.has(permission)) {
-      message.channel.send('権限がありません');
+      message.channel.send(`このコマンドを実行するには${permission}が必要です`);
       return;
     }
   }
@@ -79,6 +79,11 @@ module.exports = (name, args, message, client) => {
     })()
     break;
     case 'execpermission': {
+      if (permission != null && !message.member.permissions.has('ADMINISTRATOR')) {
+        message.channel.send(`このコマンドを実行するにはADMINISTRATORが必要です`);
+        return;
+      }
+
       let argList = args.split(/ |\n/).filter(item => item != '');
       let data = JSON.parse(fs.existsSync(`data/${message.guild.id}.json`) ?
         fs.readFileSync(`data/${message.guild.id}.json`) : '{}');
