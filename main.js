@@ -4,11 +4,13 @@ const client = new Client({
   intents: [
     Intents.FLAGS.GUILDS,
     Intents.FLAGS.GUILD_MESSAGES,
+    Intents.FLAGS.GUILD_MEMBERS,
   ]
 });
 
 const runCommand = require('./run_command')
 const autoReply = require('./auto_reply');
+const autoRoles = require('./auto_roles');
 
 client.on('ready', () => {
   console.log('Ready');
@@ -21,6 +23,10 @@ client.on('messageCreate', message => {
   else {
     autoReply(message);
   }
+})
+
+client.on('guildMemberAdd', member => {
+  autoRoles(member);
 })
 
 client.login(botToken);
